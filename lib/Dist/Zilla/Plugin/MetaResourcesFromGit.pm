@@ -200,7 +200,7 @@ in the local Git configuration. This is currently (probably) GitHub-centric.
 The name of the distribution as given to the C<name> option in your
 C<dist.ini> file. You can also use C<< %{lc}N >> or C<< %{uc}N >> to get the
 name in lower or upper case respectively, or C<< %{deb}N >> to get the name in
-a Debian GNU/Linux package-name format (C<lib-foo-bar-perl>).
+a Debian GNU/Linux package-name format (C<libfoo-bar-perl>).
 
 =back
 
@@ -208,13 +208,15 @@ a Debian GNU/Linux package-name format (C<lib-foo-bar-perl>).
 
 =over 4
 
-=item * Make things less GitHub-centric. Patches welcome!
+=item * Make things less GitHub-centric.
+
+=item * Support for arbitrary resource keys, just like MetaResources.
 
 =back
 
 =head1 THANKS
 
-To C<cjm> from IRC for suggesting this as a better way to achieve my requirements.
+To C<cjm> from IRC for suggesting this as a better way to meet my needs.
 
 =cut
 
