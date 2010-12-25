@@ -56,7 +56,7 @@ has _github => (
     lazy_build => 1,
 );
 
-sub _build_github {
+sub _build__github {
     my $self = shift;
 
     my $root = dir('.git');
