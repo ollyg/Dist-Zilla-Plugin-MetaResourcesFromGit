@@ -3,6 +3,10 @@ package Dist::Zilla::Plugin::MetaResourcesFromGit;
 use Moose;
 with 'Dist::Zilla::Role::MetaProvider';
 
+# both available due to Dist::Zilla
+use Path::Class 'dir';
+use Config::INI::Reader;
+
 our %transform = (
   'lc' => sub { lc shift },
   'uc' => sub { uc shift },
