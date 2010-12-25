@@ -121,7 +121,7 @@ __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 In your C<dist.ini> or C<profile.ini>:
 
- [GitHubMeta]
+ [MetaResourcesFromGit]
 
 =head1 DESCRIPTION
 
@@ -154,25 +154,61 @@ It defaults to C<origin>.
 
 =item C<homepage>
 
-
+A link on the CPAN page of your distribution, defaulting to the wiki page of a
+constructed L<http://github.com> repository for your code. You can use the
+formatting options below when overriding this value.
 
 =item C<bugtracker.web>
 
+A link on the CPAN page of your distribution, defaulting to its corresponding
+L<http://rt.cpan.org> homepage. You can use the formatting options below when
+overriding this value.
+
 =item C<repository.url>
+
+A link on the CPAN page of your distribution, defaulting to the read-only
+clone URL belonging to a contructed L<http://github.com> repository for your
+code. You can use the formatting options below when overriding this value.
 
 =back
 
 =head2 Formatting Options
 
+The following codes may be used when overriding the C<homepage>,
+C<bugtracker.web>, and C<repository.url> configuration options.
 
+=over 4
 
+=item C<%a>
 
+The "account" (username) as parsed from the remote repository URL in the local
+Git configuration. This is currently (probably) GitHub-centric.
 
+=item C<%r>
 
+The "repository" (or, project name) as parsed from the remote repiository URL
+in the local Git configuration. This is currently (probably) GitHub-centric.
 
+=item C<%N>
 
+The name of the distribution as given to the C<name> option in your
+C<dist.ini> file. You can also use C<< %{lc}N >> or C<< %{uc}N >> to get the
+name in lower or upper case respectively, or C<< %{deb}N >> to get the name in
+a Debian GNU/Linux package-name format (C<lib-foo-bar-perl>).
 
+=back
 
+=head1 TODO
 
+=over 4
 
+=item * Make things less GitHub-centric. Patches welcome!
+
+=back
+
+=head1 THANKS
+
+To C<cjm> from IRC for suggesting this as a better way to achieve my requirements.
+
+=cut
 
