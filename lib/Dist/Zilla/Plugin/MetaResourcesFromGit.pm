@@ -109,9 +109,11 @@ sub metadata {
     my ($self) = @_;
 
     return {
-        homepage => _format_string($self->homepage, $self),
-        bugracker  => { web => _format_string($self->bugtracker_web, $self) },
-        repository => { url => _format_string($self->repository_url, $self) },
+        resources => {
+            homepage => _format_string($self->homepage, $self),
+            bugtracker => { web => _format_string($self->bugtracker_web, $self) },
+            repository => { url => _format_string($self->repository_url, $self) },
+        },
     };
 }
 
@@ -119,7 +121,7 @@ no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 
-# ABSTRACT: Provide CPAN and GitHub.com "resource" URLs for distribution metadata
+# ABSTRACT: Metadata resource URLs from Git configuration
 
 =head1 SYNOPSIS
 
