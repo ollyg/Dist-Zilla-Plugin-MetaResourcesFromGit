@@ -14,7 +14,7 @@ meta-spec:
 name: Dist-Zilla-Plugin-MetaResourcesFromGit
 requires:
   Config::INI::Reader: 0
-  Dist::Zilla::Role::MetaProvider: 0
+  Dist::Zilla::Plugin::MetaResources: 0
   Moose: 0
   Path::Class: 0
   String::Formatter: 0
@@ -22,4 +22,4 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-MetaResourcesFromGit
   homepage: http://github.com/ollyg/Dist-Zilla-Plugin-MetaResourcesFromGit/wiki
   repository: git://github.com/ollyg/Dist-Zilla-Plugin-MetaResourcesFromGit.git
-version: 1.103590
+version: 1.103610

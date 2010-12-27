@@ -3,7 +3,7 @@ NAME
     Git configuration
 
 VERSION
-    version 1.103590
+    version 1.103610
 
 SYNOPSIS
     In your "dist.ini" or "profile.ini":
@@ -12,16 +12,22 @@ SYNOPSIS
 
 DESCRIPTION
     This plugin is a drop-in replacement for
-    Dist::Zilla::Plugin::MetaResources for users of Git. It provides three
-    resource links to your distribution metadata, based on the name of the
-    distribution and the remote URL of the Git repository you are working
-    from.
+    Dist::Zilla::Plugin::MetaResources for users of Git. It *automatically*
+    provides three resource links to your distribution metadata, based on
+    the name of the distribution and the remote URL of the Git repository
+    you are working from.
 
     The default links are equivalent to:
 
      homepage       = http://github.com/%a/%r/wiki
      bugtracker.web = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
      repository.url = git://github.com/%a/%r.git
+
+    Any other resources provided to this Plugin are passed through to the
+    "MetaResources" Plugin as-is. If you wish to override one of the above,
+    use the formatting options below. If you wish to suppress the appearance
+    of one of the above resources, set an empty or false value in
+    "dist.ini".
 
 CONFIGURATION
   Plugin Options
@@ -64,14 +70,13 @@ CONFIGURATION
     %N  The name of the distribution as given to the "name" option in your
         "dist.ini" file. You can also use "%{lc}N" or "%{uc}N" to get the
         name in lower or upper case respectively, or "%{deb}N" to get the
-        name in a Debian GNU/Linux package-name format ("lib-foo-bar-perl").
+        name in a Debian GNU/Linux package-name format ("libfoo-bar-perl").
 
 TODO
-    *   Make things less GitHub-centric. Patches welcome!
+    *   Make things less GitHub-centric.
 
 THANKS
-    To "cjm" from IRC for suggesting this as a better way to achieve my
-    requirements.
+    To "cjm" from IRC for suggesting this as a better way to meet my needs.
 
 AUTHOR
     Oliver Gorwits <oliver@cpan.org>

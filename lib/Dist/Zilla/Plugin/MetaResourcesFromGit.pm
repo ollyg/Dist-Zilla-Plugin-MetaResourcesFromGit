@@ -1,10 +1,10 @@
 package Dist::Zilla::Plugin::MetaResourcesFromGit;
 BEGIN {
-  $Dist::Zilla::Plugin::MetaResourcesFromGit::VERSION = '1.103590';
+  $Dist::Zilla::Plugin::MetaResourcesFromGit::VERSION = '1.103610';
 }
 
 use Moose;
-with 'Dist::Zilla::Role::MetaProvider';
+extends 'Dist::Zilla::Plugin::MetaResources';
 
 # both available due to Dist::Zilla
 use Path::Class 'dir';
@@ -93,35 +93,44 @@ sub _build__github {
     return { account => $account, project => $project };
 }
 
-sub BUILDARGS {
-    my ($class, @arg) = @_;
-    my %attr = ref $arg[0] ? %{ $arg[0] } : @arg;
+sub BUILD {
+    my ($self, $params) = @_;
 
-    if (exists $attr{'bugtracker.web'}) {
-        $attr{'bugtracker_web'} = delete $attr{'bugtracker.web'};
+    if (eval {exists $params->{resources}->{homepage}}) {
+        # if param is customized by the user, format it
+        $params->{resources}->{homepage}
+            &&= _format_string($params->{resources}->{homepage}, $self);
+        # else user has asked for param to be disabled
+    }
+    else {
+        # use our default
+        $params->{resources}->{homepage}
+            = _format_string($self->homepage, $self);
     }
 
-    if (exists $attr{'repository.url'}) {
-        $attr{'repository_url'} = delete $attr{'repository.url'};
+    if (eval {exists $params->{resources}->{bugtracker}->{web}}) {
+        $params->{resources}->{bugtracker}->{web}
+            &&= _format_string($params->{resources}->{bugtracker}->{web}, $self);
+    }
+    else {
+        $params->{resources}->{bugtracker}->{web}
+            = _format_string($self->bugtracker_web, $self);
     }
 
-    return \%attr;
-}
+    if (eval {exists $params->{resources}->{repository}->{url}}) {
+        $params->{resources}->{repository}->{url}
+            &&= _format_string($params->{resources}->{repository}->{url}, $self);
+    }
+    else {
+        $params->{resources}->{repository}->{url}
+            = _format_string($self->repository_url, $self);
+    }
 
-sub metadata {
-    my ($self) = @_;
-
-    return {
-        resources => {
-            homepage => _format_string($self->homepage, $self),
-            bugtracker => { web => _format_string($self->bugtracker_web, $self) },
-            repository => { url => _format_string($self->repository_url, $self) },
-        },
-    };
+    return $params;
 }
 
 no Moose;
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+__PACKAGE__->meta->make_immutable;
 1;
 
 # ABSTRACT: Metadata resource URLs from Git configuration
@@ -137,7 +146,7 @@ Dist::Zilla::Plugin::MetaResourcesFromGit - Metadata resource URLs from Git conf
 
 =head1 VERSION
 
-version 1.103590
+version 1.103610
 
 =head1 SYNOPSIS
 
@@ -148,15 +157,20 @@ In your C<dist.ini> or C<profile.ini>:
 =head1 DESCRIPTION
 
 This plugin is a drop-in replacement for L<Dist::Zilla::Plugin::MetaResources>
-for users of Git. It provides three resource links to your distribution
-metadata, based on the name of the distribution and the remote URL of the Git
-repository you are working from.
+for users of Git. It I<automatically> provides three resource links to your
+distribution metadata, based on the name of the distribution and the remote
+URL of the Git repository you are working from.
 
 The default links are equivalent to:
 
  homepage       = http://github.com/%a/%r/wiki
  bugtracker.web = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
  repository.url = git://github.com/%a/%r.git
+
+Any other resources provided to this Plugin are passed through to the
+C<MetaResources> Plugin as-is. If you wish to override one of the above, use
+the formatting options below. If you wish to suppress the appearance of one of
+the above resources, set an empty or false value in C<dist.ini>.
 
 =head1 CONFIGURATION
 
@@ -216,7 +230,7 @@ in the local Git configuration. This is currently (probably) GitHub-centric.
 The name of the distribution as given to the C<name> option in your
 C<dist.ini> file. You can also use C<< %{lc}N >> or C<< %{uc}N >> to get the
 name in lower or upper case respectively, or C<< %{deb}N >> to get the name in
-a Debian GNU/Linux package-name format (C<lib-foo-bar-perl>).
+a Debian GNU/Linux package-name format (C<libfoo-bar-perl>).
 
 =back
 
@@ -224,13 +238,13 @@ a Debian GNU/Linux package-name format (C<lib-foo-bar-perl>).
 
 =over 4
 
-=item * Make things less GitHub-centric. Patches welcome!
+=item * Make things less GitHub-centric.
 
 =back
 
 =head1 THANKS
 
-To C<cjm> from IRC for suggesting this as a better way to achieve my requirements.
+To C<cjm> from IRC for suggesting this as a better way to meet my needs.
 
 =head1 AUTHOR
 

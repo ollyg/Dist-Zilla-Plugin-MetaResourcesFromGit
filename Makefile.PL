@@ -21,12 +21,12 @@ my %WriteMakefileArgs = (
   'NAME' => 'Dist::Zilla::Plugin::MetaResourcesFromGit',
   'PREREQ_PM' => {
     'Config::INI::Reader' => '0',
-    'Dist::Zilla::Role::MetaProvider' => '0',
+    'Dist::Zilla::Plugin::MetaResources' => '0',
     'Moose' => '0',
     'Path::Class' => '0',
     'String::Formatter' => '0'
   },
-  'VERSION' => '1.103590',
+  'VERSION' => '1.103610',
   'test' => {
     'TESTS' => ''
   }
