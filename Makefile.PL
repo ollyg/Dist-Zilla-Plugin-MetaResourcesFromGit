@@ -26,7 +26,7 @@ my %WriteMakefileArgs = (
     'Path::Class' => '0',
     'String::Formatter' => '0'
   },
-  'VERSION' => '1.103610',
+  'VERSION' => '1.103620',
   'test' => {
     'TESTS' => ''
   }

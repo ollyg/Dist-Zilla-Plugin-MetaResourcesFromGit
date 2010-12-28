@@ -3,7 +3,7 @@ NAME
     Git configuration
 
 VERSION
-    version 1.103610
+    version 1.103620
 
 SYNOPSIS
     In your "dist.ini" or "profile.ini":
@@ -19,9 +19,11 @@ DESCRIPTION
 
     The default links are equivalent to:
 
-     homepage       = http://github.com/%a/%r/wiki
-     bugtracker.web = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
-     repository.url = git://github.com/%a/%r.git
+     homepage        = https://github.com/%a/%r/wiki
+     bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
+     repository.url  = git://github.com/%a/%r.git
+     repository.web  = https://github.com/%a/%r
+     repository.type = git
 
     Any other resources provided to this Plugin are passed through to the
     "MetaResources" Plugin as-is. If you wish to override one of the above,
@@ -55,9 +57,16 @@ CONFIGURATION
         repository for your code. You can use the formatting options below
         when overriding this value.
 
+    "repository.web"
+        A link on the CPAN page of your distribution, defaulting to the web
+        based source browsing page for at <http://github.com> for the
+        "repository.url". You can use the formatting options below when
+        overriding this value.
+
   Formatting Options
     The following codes may be used when overriding the "homepage",
-    "bugtracker.web", and "repository.url" configuration options.
+    "bugtracker.web", <repository.url> and "repository.web" configuration
+    options.
 
     %a  The "account" (username) as parsed from the remote repository URL in
         the local Git configuration. This is currently (probably)

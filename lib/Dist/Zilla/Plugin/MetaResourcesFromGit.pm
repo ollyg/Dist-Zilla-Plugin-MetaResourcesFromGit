@@ -1,6 +1,6 @@
 package Dist::Zilla::Plugin::MetaResourcesFromGit;
 BEGIN {
-  $Dist::Zilla::Plugin::MetaResourcesFromGit::VERSION = '1.103610';
+  $Dist::Zilla::Plugin::MetaResourcesFromGit::VERSION = '1.103620';
 }
 
 use Moose;
@@ -42,7 +42,7 @@ has remote => (
 has homepage => (
     is      => 'ro',
     isa     => 'Str',
-    default => 'http://github.com/%a/%r/wiki',
+    default => 'https://github.com/%a/%r/wiki',
 );
 
 has bugtracker_web => (
@@ -55,6 +55,12 @@ has repository_url => (
     is      => 'ro',
     isa     => 'Str',
     default => 'git://github.com/%a/%r.git',
+);
+
+has repository_web => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => 'https://github.com/%a/%r',
 );
 
 has _github => (
@@ -126,6 +132,19 @@ sub BUILD {
             = _format_string($self->repository_url, $self);
     }
 
+    if (eval {$params->{resources}->{repository}->{url}}) {
+        $params->{resources}->{repository}->{type} = 'git';
+    
+        if (eval {exists $params->{resources}->{repository}->{web}}) {
+            $params->{resources}->{repository}->{web}
+                &&= _format_string($params->{resources}->{repository}->{web}, $self);
+        }
+        else {
+            $params->{resources}->{repository}->{web}
+                = _format_string($self->repository_web, $self);
+        }
+    }
+
     return $params;
 }
 
@@ -146,7 +165,7 @@ Dist::Zilla::Plugin::MetaResourcesFromGit - Metadata resource URLs from Git conf
 
 =head1 VERSION
 
-version 1.103610
+version 1.103620
 
 =head1 SYNOPSIS
 
@@ -163,9 +182,11 @@ URL of the Git repository you are working from.
 
 The default links are equivalent to:
 
- homepage       = http://github.com/%a/%r/wiki
- bugtracker.web = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
- repository.url = git://github.com/%a/%r.git
+ homepage        = https://github.com/%a/%r/wiki
+ bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=%N
+ repository.url  = git://github.com/%a/%r.git
+ repository.web  = https://github.com/%a/%r
+ repository.type = git
 
 Any other resources provided to this Plugin are passed through to the
 C<MetaResources> Plugin as-is. If you wish to override one of the above, use
@@ -206,12 +227,19 @@ A link on the CPAN page of your distribution, defaulting to the read-only
 clone URL belonging to a contructed L<http://github.com> repository for your
 code. You can use the formatting options below when overriding this value.
 
+=item C<repository.web>
+
+A link on the CPAN page of your distribution, defaulting to the web based
+source browsing page for at L<http://github.com> for the C<repository.url>.
+You can use the formatting options below when overriding this value.
+
 =back
 
 =head2 Formatting Options
 
 The following codes may be used when overriding the C<homepage>,
-C<bugtracker.web>, and C<repository.url> configuration options.
+C<bugtracker.web>, <repository.url> and C<repository.web> configuration
+options.
 
 =over 4
 
